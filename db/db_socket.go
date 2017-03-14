@@ -1,0 +1,53 @@
+package db
+
+import (
+	"database/sql"
+	"fmt"
+	"github.com/giskook/pdas/base"
+	"github.com/giskook/pdas/conf"
+	_ "github.com/lib/pq"
+	"log"
+	"sync"
+)
+
+type DbSocket struct {
+	Db                  *sql.DB
+	ChargingPricesMutex sync.Mutex
+	TransactionChan     chan chan *base.BluetoothRing
+}
+
+var G_DBSocket_Mutex sync.Mutex
+var G_DBSocket *DbSocket
+
+func NewDbSocket(db_config *conf.DBConfiguration) (*DbSocket, error) {
+	defer G_DBSocket_Mutex.Unlock()
+	G_DBSocket_Mutex.Lock()
+	conn_string := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=disable", db_config.User, db_config.Passwd, db_config.Host, db_config.Port, db_config.DbName)
+
+	log.Println(conn_string)
+	db, err := sql.Open("postgres", conn_string)
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	log.Println("db open success")
+
+	G_DBSocket = &DbSocket{
+		Db:              db,
+		TransactionChan: make(chan chan *base.BluetoothRing),
+	}
+
+	return G_DBSocket, nil
+}
+
+func (db_socket *DbSocket) Close() {
+	db_socket.Db.Close()
+}
+
+func GetDBSocket() *DbSocket {
+	defer G_DBSocket_Mutex.Unlock()
+	G_DBSocket_Mutex.Lock()
+
+	return G_DBSocket
+}
