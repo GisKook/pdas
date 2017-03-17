@@ -150,11 +150,11 @@ func GetMac(str string) uint64 {
 	return binary.BigEndian.Uint64(writer.Bytes())
 }
 
-func GetLoc(x int32, y int32) string {
-	f_x := float64(x) / 100
-	f_y := float64(y) / 100
-	s_x := strconv.FormatFloat(f_x, 'f', 2, 32)
-	s_y := strconv.FormatFloat(f_y, 'f', 2, 32)
+func GetLoc(x string, y string) string {
+	//	f_x := float64(x) / 100
+	//	f_y := float64(y) / 100
+	//	s_x := strconv.FormatFloat(f_x, 'f', 2, 32)
+	//	s_y := strconv.FormatFloat(f_y, 'f', 2, 32)
 
-	return s_x + "," + s_y
+	return x + "," + y
 }

@@ -1,0 +1,117 @@
+syntax="proto2";
+package Report;
+
+option java_package = "com.cetcnav.lbs.platform.pb.model";
+option java_outer_classname="LocationReportProtos";
+
+// 84坐标信息
+message WGS84 {
+	required int32 lng_e6 = 1 [default = 0];
+	required int32 lat_e6 = 2 [default = 0];
+	optional int32 altitude = 5 [default = 0];
+}
+
+// 02坐标信息
+message GCJ02 {
+	required int32 lng_e6 = 1 [default = 0];
+	required int32 lat_e6 = 2 [default = 0];
+	optional int32 altitude = 5 [default = 0];
+}
+
+// 基站定位信息
+message MobileCell {
+	required int32 mcc = 1 [default = 406];
+	required int32 mnc = 2;
+	required int32 lac = 3;
+	required int32 cellid = 4;
+
+	optional int32 ss = 5; // radio signal strength measured in dBm.
+}
+message Wifi{
+    optional string mac = 1;
+    optional string signal = 2;
+    optional string ssid = 3;
+}
+
+// 射频识别定位信息
+message RFID {
+	required int32 id = 1;
+}
+
+// 室内定位信息
+message TagMacRssi{
+	optional int64 tagMac =1; //蓝牙标签mac
+	optional double rssi=2; //蓝牙强度
+}
+
+// 室内定位信息
+message Indoor {
+	optional string ringMac =1; //手环MAC
+	optional int32 batt =2; //电池电量0-100表示百分比
+	repeated TagMacRssi tagMacRssi = 3;//蓝牙Mac、蓝牙强度
+	optional double degreeX =4; //三轴加速度X
+	optional double degreeY =5; //三轴加速度Y
+	optional double degreeZ =6; //三轴加速度Z
+	optional int32 alarm = 7; //报警类型
+}
+
+// 室内蓝牙信号强度信息
+message IndoorIntensity {
+	
+	required string  imei =1;
+	required int64 btId = 2;	// 室内蓝牙标签标识
+	required double rssi = 3;	// 蓝牙信号强度，范围-30到-100
+	required string fingerId =4;  // 唯一标识建筑物
+    required string  loc  =  5;  //横坐标       
+	required string  orientation  =6;   //标识方向的标识位，1234对应东西南北
+	//required int32 groupId = 7;   //对应采集的组号
+    
+	
+	
+}
+
+// 定位信息
+message Location {
+	// 位置坐标类型
+	enum LocationType {
+		EWGS84     = 0;	// 84坐标类型
+		EGCJ02     = 1;	// 02坐标类型
+		EMobileCell= 2;	// 基站信息类型
+		ERFID      = 3;	// 射频识别类型
+		EIndoor    = 4; // 室内蓝牙定位类型
+		EIndoorIntensity    = 5; // 室内蓝牙信号强度类型
+		WIFI       = 6; // wifi 上报数据类型
+	}
+	// 位置信息来源
+	enum FromType {
+		ETerminal = 0;	// 来自平台
+		EPlatform = 1;	// 来自终端
+	}
+	required LocationType locationtype= 1;
+	required FromType     from        = 2;
+	optional WGS84 wgs84 = 3;
+	optional GCJ02 gcj02 = 4;
+	repeated MobileCell cells = 5;
+	optional Indoor indoor = 6;
+	optional IndoorIntensity intensity = 7;
+	repeated Wifi wifis = 8;
+}
+
+// 移动定位扩展信息
+message MobileLocationData {
+	required int32   battery       = 1;
+	required int32   speed         = 2;
+	optional int32   parse         = 3;
+	optional int32   reason        = 4;
+}
+
+// 终端位置信息
+message LocationReport {
+	required int64   time_send     = 1;
+	required int64   time_recv     = 2;
+	optional int32   serial_number = 3;
+	required string  tid           = 4;
+	optional string  uuid          = 5;
+	repeated Location   locations  = 6;	
+	optional MobileLocationData  mld = 7;
+}

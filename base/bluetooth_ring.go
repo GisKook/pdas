@@ -14,8 +14,8 @@ type BluetoothRing struct {
 	DegreeZ     int8   `json:"degree_z"`
 	Bett        uint8  `json:"bett"`
 	Warn        uint8  `json:"warn"`
-	X           int32  `json:"x"`
-	Y           int32  `json:"y"`
+	X           string `json:"x"`
+	Y           string `json:"y"`
 	Orientation string `json:"orientation"`
 	FingerID    string `json:"finger_id"`
 }

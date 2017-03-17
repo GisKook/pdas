@@ -13,7 +13,7 @@ import (
 type DbSocket struct {
 	Db                  *sql.DB
 	ChargingPricesMutex sync.Mutex
-	TransactionChan     chan chan *base.BluetoothRing
+	TransactionChan     chan *base.BluetoothRing
 }
 
 var G_DBSocket_Mutex sync.Mutex
@@ -35,7 +35,7 @@ func NewDbSocket(db_config *conf.DBConfiguration) (*DbSocket, error) {
 
 	G_DBSocket = &DbSocket{
 		Db:              db,
-		TransactionChan: make(chan chan *base.BluetoothRing),
+		TransactionChan: make(chan *base.BluetoothRing, 1024),
 	}
 
 	return G_DBSocket, nil

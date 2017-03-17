@@ -2,9 +2,15 @@ package mqtt_srv
 
 import (
 	"encoding/json"
+	MQTT "github.com/eclipse/paho.mqtt.golang"
 	"github.com/giskook/pdas/base"
 	"log"
 )
+
+var f MQTT.MessageHandler = func(client MQTT.Client, msg MQTT.Message) {
+	log.Printf("TOPIC: %s\n", msg.Topic())
+	log.Printf("MSG: %s\n", msg.Payload())
+}
 
 func (mqtt_socket *Mqtt_srv_socket) send(p *base.BluetoothRing) {
 	payload, _ := json.Marshal(p)
