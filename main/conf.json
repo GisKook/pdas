@@ -19,5 +19,9 @@
         "ConnTimeout": 300,
         "ConnCheckInterval": 30,
         "ServerStatistics": 300
+    },
+    "Zmq":{
+	    "PosUpAddr":"tcp://*1902",
+	    "ReportInterval":2
     }
 }

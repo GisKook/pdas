@@ -40,6 +40,15 @@ func ReadMac(reader *bytes.Reader) string {
 	return mac_string
 }
 
+func ReadMacInt(reader *bytes.Reader) int64 {
+	mac_byte := make([]byte, 6)
+	reader.Read(mac_byte)
+	mac := []byte{0, 0}
+	mac = append(mac, mac_byte...)
+
+	return int64(binary.BigEndian.Uint64(mac))
+}
+
 func ReadString(reader *bytes.Reader, length uint8) string {
 	string_byte := make([]byte, length)
 	reader.Read(string_byte)

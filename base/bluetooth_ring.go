@@ -31,3 +31,18 @@ func (btr *BluetoothRing) UnmarshalJSON(str string) error {
 	}
 	return nil
 }
+
+type TagMacRssi struct {
+	TagMac int64
+	Rssi   float64
+}
+
+type LocateMessage struct {
+	RingMac  string
+	DegreeX  float64
+	DegreeY  float64
+	DegreeZ  float64
+	Bett     int32
+	WarnInfo int32
+	Rssis    []*TagMacRssi
+}

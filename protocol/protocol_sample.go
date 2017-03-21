@@ -20,7 +20,7 @@ func (p *SamplePacket) Serialize() []byte {
 
 func ParseSample(buffer []byte) *SamplePacket {
 	reader, _, _ := ParseHeader(buffer)
-	tag_mac := base.ReadMac(reader)
+	ring_mac := base.ReadMac(reader)
 	_degree_x, _ := reader.ReadByte()
 	degree_x := int8(_degree_x)
 	_degree_y, _ := reader.ReadByte()
@@ -29,7 +29,7 @@ func ParseSample(buffer []byte) *SamplePacket {
 	degree_z := int8(_degree_z)
 	bett, _ := reader.ReadByte()
 	reader.ReadByte()
-	ring_mac := base.ReadMac(reader)
+	tag_mac := base.ReadMac(reader)
 	_rssi, _ := reader.ReadByte()
 	rssi := int8(_rssi)
 

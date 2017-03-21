@@ -46,7 +46,7 @@ func (this *Callback) OnMessage(c *gotcp.Conn, p gotcp.Packet) bool {
 		event_handler_blue_tooth_sample(c, prison_pkg)
 	case protocol.PROTOCOL_BLUETOOTH_LOCATE:
 		log.Println("PROTOCOL_BLUETOOTH_LOCATE")
-		//	event_handler_blue_tooth_locate(c, prison_pkg)
+		event_handler_blue_tooth_locate(c, prison_pkg)
 	}
 
 	return true

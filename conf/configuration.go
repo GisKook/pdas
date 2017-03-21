@@ -29,10 +29,16 @@ type ServerConfiguration struct {
 	ServerStatistics  uint16
 }
 
+type ZmqConfiguration struct {
+	PosUpAddr      string
+	ReportInterval uint8
+}
+
 type Configuration struct {
 	Server *ServerConfiguration
 	DB     *DBConfiguration
 	Mqtt   *MqttConfiguration
+	Zmq    *ZmqConfiguration
 }
 
 var G_conf *Configuration
