@@ -29,6 +29,7 @@ func ParseSample(buffer []byte) *SamplePacket {
 	degree_z := int8(_degree_z)
 	bett, _ := reader.ReadByte()
 	reader.ReadByte()
+	reader.ReadByte()
 	tag_mac := base.ReadMac(reader)
 	_rssi, _ := reader.ReadByte()
 	rssi := int8(_rssi)

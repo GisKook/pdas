@@ -13,7 +13,7 @@
     	"TopicSub":"mobile2das"
     },
     "Server": {
-        "BindPort": "8766",
+        "BindPort": "8767",
         "ReadLimit": 30000,
         "WriteLimit": 30000,
         "ConnTimeout": 300,
@@ -21,7 +21,8 @@
         "ServerStatistics": 300
     },
     "Zmq":{
-	    "PosUpAddr":"tcp://*1902",
-	    "ReportInterval":2
+	    "PosUpAddr":"tcp://127.0.0.1:1903",
+	    "ReportInterval":2,
+	    "MaxReportCount":15
     }
 }

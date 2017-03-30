@@ -9,6 +9,7 @@ import (
 	"github.com/giskook/pdas/event_handler"
 	"github.com/giskook/pdas/mqtt_srv"
 	"github.com/giskook/pdas/server"
+	"github.com/giskook/pdas/zmq_socket"
 	"log"
 	"net"
 	"os"
@@ -37,6 +38,12 @@ func main() {
 	go _mqtt_srv.Recv()
 	go _mqtt_srv.Proccess()
 	//	go _mqtt_srv.ProccessSub()
+	// create zmq
+	_zmq_socket := zmq_socket.GetZmqSocket()
+	_zmq_socket.ConnectToServer()
+
+	_zmq_worker := zmq_socket.GetZmqWorker()
+	_zmq_worker.Run()
 
 	// creates a tcp server
 	config := &gotcp.Config{

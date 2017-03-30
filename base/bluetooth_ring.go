@@ -6,18 +6,18 @@ import (
 )
 
 type BluetoothRing struct {
-	TagMac      string `json:"tag_mac"`
-	Rssi        int8   `json:"rssi"`
-	RingMac     string `json:"ring_mac"`
-	DegreeX     int8   `json:"degree_x"`
-	DegreeY     int8   `json:"degree_y"`
-	DegreeZ     int8   `json:"degree_z"`
-	Bett        uint8  `json:"bett"`
-	Warn        uint8  `json:"warn"`
-	X           string `json:"x"`
-	Y           string `json:"y"`
-	Orientation string `json:"orientation"`
-	FingerID    string `json:"finger_id"`
+	TagMac      string  `json:"tag_mac"`
+	Rssi        int8    `json:"rssi"`
+	RingMac     string  `json:"ring_mac"`
+	DegreeX     float64 `json:"degree_x"`
+	DegreeY     float64 `json:"degree_y"`
+	DegreeZ     float64 `json:"degree_z"`
+	Bett        uint8   `json:"bett"`
+	Warn        uint8   `json:"warn"`
+	X           string  `json:"x"`
+	Y           string  `json:"y"`
+	Orientation string  `json:"orientation"`
+	FingerID    string  `json:"finger_id"`
 }
 
 func (btr *BluetoothRing) UnmarshalJSON(str string) error {

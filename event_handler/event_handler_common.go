@@ -39,6 +39,7 @@ func (this *Callback) OnClose(c *gotcp.Conn) {
 }
 
 func (this *Callback) OnMessage(c *gotcp.Conn, p gotcp.Packet) bool {
+	log.Println("OnMessage")
 	prison_pkg := p.(*pkg.Prison_Packet)
 	switch prison_pkg.Type {
 	case protocol.PROTOCOL_BLUETOOTH_SAMPLE:

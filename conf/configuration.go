@@ -32,6 +32,7 @@ type ServerConfiguration struct {
 type ZmqConfiguration struct {
 	PosUpAddr      string
 	ReportInterval uint8
+	MaxReportCount uint8
 }
 
 type Configuration struct {

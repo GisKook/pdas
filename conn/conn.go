@@ -16,38 +16,36 @@ type ConnConfig struct {
 }
 
 type Conn struct {
-	conn                 *gotcp.Conn
-	config               *ConnConfig
-	recieveBuffer        *bytes.Buffer
-	ticker               *time.Ticker
-	readflag             int64
-	writeflag            int64
-	chan_read            chan int64
-	chan_write           chan int64
-	packetNsqReceiveChan chan gotcp.Packet
-	closeChan            chan bool
-	index                uint32
-	ID                   uint64
-	Status               uint8
-	BluetoothRing        *base.BluetoothRing
-	ReadMore             bool
+	conn          *gotcp.Conn
+	config        *ConnConfig
+	recieveBuffer *bytes.Buffer
+	ticker        *time.Ticker
+	readflag      int64
+	writeflag     int64
+	chan_read     chan int64
+	chan_write    chan int64
+	closeChan     chan bool
+	index         uint32
+	ID            uint64
+	Status        uint8
+	BluetoothRing *base.BluetoothRing
+	ReadMore      bool
 }
 
 func NewConn(conn *gotcp.Conn, config *ConnConfig) *Conn {
 	return &Conn{
-		conn:                 conn,
-		recieveBuffer:        bytes.NewBuffer([]byte{}),
-		config:               config,
-		readflag:             time.Now().Unix(),
-		writeflag:            time.Now().Unix(),
-		chan_read:            make(chan int64),
-		chan_write:           make(chan int64),
-		ticker:               time.NewTicker(time.Duration(config.ConnCheckInterval) * time.Second),
-		packetNsqReceiveChan: make(chan gotcp.Packet, config.NsqChanLimit),
-		closeChan:            make(chan bool),
-		index:                0,
-		ReadMore:             true,
-		BluetoothRing:        &base.BluetoothRing{},
+		conn:          conn,
+		recieveBuffer: bytes.NewBuffer([]byte{}),
+		config:        config,
+		readflag:      time.Now().Unix(),
+		writeflag:     time.Now().Unix(),
+		chan_read:     make(chan int64),
+		chan_write:    make(chan int64),
+		ticker:        time.NewTicker(time.Duration(config.ConnCheckInterval) * time.Second),
+		closeChan:     make(chan bool),
+		index:         0,
+		ReadMore:      true,
+		BluetoothRing: &base.BluetoothRing{},
 	}
 }
 
@@ -55,7 +53,6 @@ func (c *Conn) Close() {
 	c.closeChan <- true
 	c.ticker.Stop()
 	c.recieveBuffer.Reset()
-	close(c.packetNsqReceiveChan)
 	close(c.closeChan)
 }
 
@@ -63,25 +60,7 @@ func (c *Conn) GetBuffer() *bytes.Buffer {
 	return c.recieveBuffer
 }
 
-func (c *Conn) writeToclientLoop() {
-	defer func() {
-		c.conn.Close()
-	}()
-
-	for {
-		select {
-		case p := <-c.packetNsqReceiveChan:
-			if p != nil {
-				c.conn.GetRawConn().Write(p.Serialize())
-			}
-		case <-c.closeChan:
-			return
-		}
-	}
-}
-
 func (c *Conn) SendToTerm(p gotcp.Packet) {
-	//c.packetNsqReceiveChan <- p
 	log.Printf("<OUT> %x \n", p.Serialize())
 	c.conn.AsyncWritePacket(p, time.Second)
 }
@@ -125,5 +104,4 @@ func (c *Conn) checkHeart() {
 
 func (c *Conn) Do() {
 	go c.checkHeart()
-	go c.writeToclientLoop()
 }

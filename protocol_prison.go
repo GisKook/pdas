@@ -44,12 +44,15 @@ func (this *Pdas_Protocol) ReadPacket(c *gotcp.Conn) (gotcp.Packet, error) {
 		case protocol.PROTOCOL_BLUETOOTH_SAMPLE:
 			p := protocol.ParseSample(pkgbyte)
 			smconn.ReadMore = false
+
 			return pkg.New_Prison_Pkg(protocol.PROTOCOL_BLUETOOTH_SAMPLE, p), nil
 		case protocol.PROTOCOL_BLUETOOTH_LOCATE:
+			log.Println("ReadPacket case")
 			p := protocol.ParseLocate(pkgbyte)
 			smconn.ReadMore = false
 
 			return pkg.New_Prison_Pkg(protocol.PROTOCOL_BLUETOOTH_LOCATE, p), nil
+
 		case protocol.PROTOCOL_ILLEGAL:
 			smconn.ReadMore = true
 		case protocol.PROTOCOL_HALF_PACK:

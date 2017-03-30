@@ -15,9 +15,9 @@ func event_handler_blue_tooth_sample(c *gotcp.Conn, p *pkg.Prison_Packet) {
 		TagMac:  sample_pkg.TagMac,
 		Rssi:    sample_pkg.Rssi,
 		RingMac: sample_pkg.RingMac,
-		DegreeX: sample_pkg.DegreeX,
-		DegreeY: sample_pkg.DegreeY,
-		DegreeZ: sample_pkg.DegreeZ,
+		DegreeX: float64(sample_pkg.DegreeX) / 32,
+		DegreeY: float64(sample_pkg.DegreeY) / 32,
+		DegreeZ: float64(sample_pkg.DegreeZ) / 32,
 		Bett:    sample_pkg.Bett,
 	})
 }

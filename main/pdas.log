@@ -1,9 +1,0 @@
-nohup: ignoring input
-2017/03/21 14:40:34 user=cetcnav password=dkdh13579 host=127.0.0.1 port=5432 dbname=lbs_manage sslmode=disable
-2017/03/21 14:40:34 db open success
-2017/03/21 14:40:34 Connected to MqttServer
-listening: [::]:8766
-2017/03/21 14:45:34 ---------------------Total Connections : 0---------------------
-2017/03/21 14:50:34 ---------------------Total Connections : 0---------------------
-2017/03/21 14:55:34 ---------------------Total Connections : 0---------------------
-2017/03/21 15:00:34 ---------------------Total Connections : 0---------------------

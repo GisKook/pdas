@@ -5,6 +5,7 @@ import (
 	//"github.com/golang/protobuf/proto"
 	"github.com/giskook/pdas/base"
 	"log"
+	"strings"
 )
 
 const (
@@ -23,7 +24,7 @@ func (db_socket *DbSocket) ProccessTransaction() {
 			}
 			log.Println("------")
 
-			insert_sql := fmt.Sprintf(SQL_INSERT_TABLE, trans.TagMac, base.GetMac(trans.RingMac), trans.Rssi, trans.Orientation, base.GetLoc(trans.X, trans.Y), "gis") //trans.FingerID)
+			insert_sql := fmt.Sprintf(SQL_INSERT_TABLE, strings.ToLower(trans.RingMac), base.GetMac(trans.TagMac), trans.Rssi, trans.Orientation, base.GetLoc(trans.X, trans.Y), "gis") //trans.FingerID)
 			log.Println(insert_sql)
 
 			_, err = tx.Exec(insert_sql)

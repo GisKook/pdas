@@ -32,16 +32,18 @@ func ParseLocate(buffer []byte) *LocatePacket {
 	for i := uint8(0); i < rssi_count; i++ {
 		tag_mac = base.ReadMacInt(reader)
 		_rssi, _ = reader.ReadByte()
-		rssis[i].TagMac = tag_mac
-		rssis[i].Rssi = float64(_rssi)
+		rssis[i] = &base.TagMacRssi{
+			TagMac: tag_mac,
+			Rssi:   float64(int8(_rssi)),
+		}
 	}
 
 	return &LocatePacket{
 		Location: &base.LocateMessage{
 			RingMac:  ring_mac,
-			DegreeX:  float64(degree_x),
-			DegreeY:  float64(degree_y),
-			DegreeZ:  float64(degree_z),
+			DegreeX:  float64(degree_x) / 32,
+			DegreeY:  float64(degree_y) / 32,
+			DegreeZ:  float64(degree_z) / 32,
 			Bett:     int32(bett),
 			WarnInfo: int32(warn_info),
 			Rssis:    rssis,
