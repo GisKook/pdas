@@ -1,6 +1,7 @@
 package zmq_socket
 
 import (
+	"github.com/giskook/pdas/base"
 	"github.com/giskook/pdas/conf"
 	"github.com/giskook/pdas/pb"
 	"github.com/golang/protobuf/proto"
@@ -8,7 +9,63 @@ import (
 	"time"
 )
 
+type _tag_mac_rssi struct {
+	TagMac int64
+	Rssi   float64
+	Count  int
+}
+
+func (z *ZmqWorker) GetAvgRssi(in []*base.TagMacRssi) []*base.TagMacRssi {
+	if in == nil {
+		return nil
+	}
+	tag_mac_rssi := []*_tag_mac_rssi{
+		&_tag_mac_rssi{
+			TagMac: in[0].TagMac,
+			Rssi:   in[0].Rssi,
+			Count:  1,
+		},
+	}
+	bhave := false
+	for i := 1; i < len(in); i++ {
+		bhave = false
+		for j := 0; j < len(tag_mac_rssi); j++ {
+			if tag_mac_rssi[j].TagMac == in[i].TagMac {
+				bhave = true
+				tag_mac_rssi[j].Rssi += in[i].Rssi
+				tag_mac_rssi[j].Count++
+			}
+		}
+
+		if !bhave {
+			tag_mac_rssi = append(tag_mac_rssi, &_tag_mac_rssi{
+				TagMac: in[i].TagMac,
+				Rssi:   in[i].Rssi,
+				Count:  1,
+			})
+		}
+	}
+
+	length := len(tag_mac_rssi)
+
+	mac_rssis := make([]*base.TagMacRssi, length)
+
+	for k, value := range tag_mac_rssi {
+		mac_rssis[k].TagMac = value.TagMac
+		mac_rssis[k].Rssi = value.Rssi / float64(value.Count)
+	}
+
+	return mac_rssis
+}
+
+func (z *ZmqWorker) PreProccessMsg() {
+	for i, m := range z.ZmqLocateQueue {
+		z.ZmqLocateQueue[i].Rssis = z.GetAvgRssi(m.Rssis)
+	}
+}
+
 func (z *ZmqWorker) ProccessSendMsg() {
+	z.PreProccessMsg()
 	for i, m := range z.ZmqLocateQueue {
 		time_send := time.Now().Unix() * 1000
 		time_recv := time_send

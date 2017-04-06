@@ -22,7 +22,7 @@
     },
     "Zmq":{
 	    "PosUpAddr":"tcp://127.0.0.1:1903",
-	    "ReportInterval":2,
+	    "ReportInterval":3,
 	    "MaxReportCount":15
     }
 }

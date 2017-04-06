@@ -74,23 +74,23 @@ func (z *ZmqWorker) insert_locate(key string, value *base.LocateMessage) {
 		z.ZmqLocateQueue[key].Bett = value.Bett
 		z.ZmqLocateQueue[key].WarnInfo = value.WarnInfo
 
-		bHave := false
-		for i, v := range value.Rssis {
-			bHave = false
-			for j, zv := range z.ZmqLocateQueue[key].Rssis {
-				if v.TagMac == zv.TagMac {
-					z.ZmqLocateQueue[key].Rssis[j].Rssi = v.Rssi
-					bHave = true
-
-					break
-				}
-			}
-
-			if !bHave {
-				z.ZmqLocateQueue[key].Rssis = append(z.ZmqLocateQueue[key].Rssis, value.Rssis[i])
-			}
-		}
-		//	z.ZmqLocateQueue[key].Rssis = append(z.ZmqLocateQueue[key].Rssis, value.Rssis...)
+		//		bHave := false
+		//		for i, v := range value.Rssis {
+		//			bHave = false
+		//			for j, zv := range z.ZmqLocateQueue[key].Rssis {
+		//				if v.TagMac == zv.TagMac {
+		//					z.ZmqLocateQueue[key].Rssis[j].Rssi = v.Rssi
+		//					bHave = true
+		//
+		//					break
+		//				}
+		//			}
+		//
+		//			if !bHave {
+		//				z.ZmqLocateQueue[key].Rssis = append(z.ZmqLocateQueue[key].Rssis, value.Rssis[i])
+		//			}
+		//		}
+		z.ZmqLocateQueue[key].Rssis = append(z.ZmqLocateQueue[key].Rssis, value.Rssis...)
 	} else {
 		z.ZmqLocateQueue[key] = value
 	}
